@@ -1,0 +1,34 @@
+.label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    /*-fx-font-family: "微软雅黑";*/
+}
+
+#chatTime, #overdue, #residueCharge, #account, #password,#clientTel {
+    /*-fx-background-color: transparent;*/
+    -fx-border-style: none;
+    -fx-outline: medium;
+    -fx-border-width: 10px;
+    /*-fx-border-bottom: 1px solid rgb(192,192,192);*/
+    -fx-font-family: Romantic;
+    -fx-font-size: 17px;
+    -fx-font-weight: 200;
+}
+
+#sysName{
+    /*-fx-text-fill: darkorange;*/
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);
+    -fx-font-size: 30px;
+}
+
+.button {
+    -fx-background-color:transparent;
+    -fx-border:0px;
+    -fx-font-size: 20px;
+}
+
+.button:hover {
+    -fx-text-fill: darkgrey;
+}
