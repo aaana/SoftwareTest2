@@ -25,8 +25,8 @@
         <module name="st_homework2" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="st_homework2" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="st_homework2" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

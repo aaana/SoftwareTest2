@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -43,6 +44,7 @@ public class view extends Application{
     private Label sysNameLabel;
     private Label clientTelLabel;
     private TextField clientTelField;
+    private ImageView load;
 
     //pay choice scene
     private Button alipayButton;
@@ -65,6 +67,7 @@ public class view extends Application{
     public void updateScene(Scene scene) {
         primaryStage.setScene(scene);
     }
+
 
 
     @Override
@@ -100,6 +103,11 @@ public class view extends Application{
 //        root.getChildren().add(nextMonthBtn);
 
 
+        sceneMain = new Scene(root,400,250);
+        primaryStage.setScene(sceneMain);
+        sceneMain.getStylesheets().add(prePath + "/style.css");
+        primaryStage.show();
+
         //输入手机号,按下回车后处理
         clientTelField.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
@@ -108,12 +116,23 @@ public class view extends Application{
                 if (code == KeyCode.ENTER) {
                     {
                         //获得手机号
-                        controller = new Controller( clientTelField.getText() );
+//                        load = new ImageView(prePath+"/load.gif");
+//                        load.setLayoutX(10);
+//                        load.setLayoutY(10);
+//                        root.getChildren().add(load);
+
+
+                        String tel = clientTelField.getText().trim();
+                        System.out.println(tel);
+                        controller = new Controller(tel);
+
                         updateScene(scenePayChoice);
                     }
+                    keyEvent.consume();
                 }
             }
         });
+
 
 //        nextMonthBtn.setOnAction(new EventHandler<ActionEvent>() {
 //
@@ -123,10 +142,7 @@ public class view extends Application{
 //            }
 //        });
 
-        sceneMain = new Scene(root,400,250);
-        primaryStage.setScene(sceneMain);
-        sceneMain.getStylesheets().add(prePath + "/style.css");
-        primaryStage.show();
+
 
 
         final Pane payChoice = new Pane();
@@ -186,7 +202,7 @@ public class view extends Application{
     }
 
     private void updatePayScene(){
-        Pane pay = new Pane();
+        final Pane pay = new Pane();
 
         Label expectedText = new Label("应付金额");
         expectedText.setLayoutX(50);
@@ -200,15 +216,27 @@ public class view extends Application{
         expectedLabel.setLayoutY(45);
         pay.getChildren().add(expectedLabel);
 
+        Label communicationTimeText = new Label("通话时间");
+        communicationTimeText.setLayoutX(50);
+        communicationTimeText.setLayoutY(85);
+        pay.getChildren().add(communicationTimeText);
+
+        final double communicationTime = controller.getCommunicationTime();
+        String time = String.valueOf(communicationTime);
+        Label commicationTimeLabel = new Label(time+ "分钟");
+        commicationTimeLabel.setLayoutX(180);
+        commicationTimeLabel.setLayoutY(85);
+        pay.getChildren().add(commicationTimeLabel);
+
         Label accountLabel = new Label("帐号：");
         accountLabel.setLayoutX(50);
-        accountLabel.setLayoutY(85);
+        accountLabel.setLayoutY(125);
         pay.getChildren().add(accountLabel);
 
         accountTextField = new TextField();
         accountTextField.setId("account");
         accountTextField.setLayoutX(180);
-        accountTextField.setLayoutY(85);
+        accountTextField.setLayoutY(125);
         accountTextField.setPrefSize(140, 30);
         pay.getChildren().add(accountTextField);
 
@@ -216,25 +244,25 @@ public class view extends Application{
 
         Label pswLabel = new Label("密码：");
         pswLabel.setLayoutX(50);
-        pswLabel.setLayoutY(125);
+        pswLabel.setLayoutY(165);
         pay.getChildren().add(pswLabel);
 
         passwordTextFeild = new PasswordField();
         passwordTextFeild.setId("password");
         passwordTextFeild.setLayoutX(180);
-        passwordTextFeild.setLayoutY(125);
+        passwordTextFeild.setLayoutY(165);
         passwordTextFeild.setPrefSize(140, 30);
         pay.getChildren().add(passwordTextFeild);
 
 
         Button payBtn = new Button("支付");
         payBtn.setLayoutX(20);
-        payBtn.setLayoutY(170);
+        payBtn.setLayoutY(210);
         pay.getChildren().add(payBtn);
 
         final Button printBtn = new Button("打印清单");
         printBtn.setLayoutX(190);
-        printBtn.setLayoutY(170);
+        printBtn.setLayoutY(210);
         pay.getChildren().add(printBtn);
         printBtn.setDisable( true );
 
@@ -242,28 +270,38 @@ public class view extends Application{
 
             public void handle(ActionEvent actionEvent) {
 
-                double aBalance = controller.verification( accountTextField.getText(), passwordTextFeild.getText(), expectedCharge );
+                String cardAccount = accountTextField.getText();
+                String cardPwd = passwordTextFeild.getText();
+                if(cardAccount.equals("")||cardPwd.equals("")){
+                    Alert alert = new Alert(Alert.AlertType.ERROR,"请输入卡号和密码来付款！");
+                    alert.show();
 
-                final Alert alert = new Alert(Alert.AlertType.INFORMATION); // 實體化Alert對話框物件，並直接在建構子設定對話框的訊息類型
+                }else{
 
-                if ( aBalance >= 0 ) {
-                    alert.setTitle( "支付成功" );
-                    alert.setHeaderText( "支付成功" );
-                    alert.setContentText( "您已支付成功，谢谢！\n余额: " + aBalance );
+                    double aBalance = controller.verification(cardAccount ,cardPwd , expectedCharge );
 
-                    printBtn.setDisable( false );
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION); // 實體化Alert對話框物件，並直接在建構子設定對話框的訊息類型
 
-                } else if ( aBalance == -2 ){
-                    alert.setTitle("支付s失败");
-                    alert.setHeaderText("支付失败");
-                    alert.setContentText("余额不足");
-                } else if ( aBalance == -1 ){
-                    alert.setTitle( "支付s失败" );
-                    alert.setHeaderText( "支付失败" );
-                    alert.setContentText( "用户账户或密码错误" );
+                    if ( aBalance >= 0 ) {
+                        alert.setTitle( "支付成功" );
+                        alert.setHeaderText( "支付成功" );
+                        alert.setContentText( "您已支付成功，谢谢！\n余额: " + aBalance );
+
+                        printBtn.setDisable( false );
+
+                    } else if ( aBalance == -2 ){
+                        alert.setTitle("支付s失败");
+                        alert.setHeaderText("支付失败");
+                        alert.setContentText("余额不足");
+                    } else if ( aBalance == -1 ){
+                        alert.setTitle( "支付s失败" );
+                        alert.setHeaderText( "支付失败" );
+                        alert.setContentText( "用户账户或密码错误" );
+                    }
+
+                    alert.showAndWait(); //顯示對話框，並等待對話框被關閉時才繼續執行之後的程式
                 }
 
-                alert.showAndWait(); //顯示對話框，並等待對話框被關閉時才繼續執行之後的程式
             }
         });
 
@@ -273,20 +311,31 @@ public class view extends Application{
             public void handle(ActionEvent actionEvent) {
 
                 try {
-                    controller.print();
+                    if(controller.print()){
+                        Alert printSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
+                        printSuccessAlert.setTitle("支付成功");
+                        printSuccessAlert.setHeaderText("文件已输出到printFiles目录下");
+                        String info = "手机用户: " + controller.getClient().getClientId() + "\n"
+                        + "支付用户: " + controller.getAccountId() + "\n"
+                        + "支付金额: " + controller.getExpectedCharge() + "\n"
+                        + "余额: " + controller.getPaySuccess() + "\n";
+                        printSuccessAlert.setContentText(info);
+                        printSuccessAlert.show();
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
 
-        scenePay = new Scene(pay,500,240);
+        scenePay = new Scene(pay,500,280);
         scenePay.getStylesheets().add(prePath+"/style.css");
 
 
         Button backBtn = new Button("返回主界面");
         backBtn.setLayoutX(350);
-        backBtn.setLayoutY(170);
+        backBtn.setLayoutY(210);
         pay.getChildren().add(backBtn);
 
         backBtn.setOnAction(new EventHandler<ActionEvent>() {

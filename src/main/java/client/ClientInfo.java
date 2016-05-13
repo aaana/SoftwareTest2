@@ -6,7 +6,7 @@ import tools.CalculateTool;
  * Created by tina on 16/4/28.
  */
 public class ClientInfo {
-    private int clientId;
+    private String clientId;
     private double owedBeforeYear = 0;
     private double owedThisYear = 0;
     private double timeOutCount = 0;
@@ -16,7 +16,7 @@ public class ClientInfo {
     public ClientInfo() {
     }
 
-    public ClientInfo(int clientId, double owedBeforeYear, double owedThisYear, double timeOutCount) {
+    public ClientInfo(String clientId, double owedBeforeYear, double owedThisYear, double timeOutCount) {
         this.clientId = clientId;
         this.owedBeforeYear = owedBeforeYear;
         this.owedThisYear = owedThisYear;
@@ -34,11 +34,11 @@ public class ClientInfo {
         this.timeOutCount = client.getTimeOutCount();
     }
 
-    public int getClientId() {
+    public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(int clientId) {
+    public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 

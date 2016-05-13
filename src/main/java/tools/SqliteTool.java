@@ -27,38 +27,38 @@ public class SqliteTool {
             stmt.executeUpdate(sql);
 
             sql = "INSERT INTO CLIENTINFO " +
-                    "VALUES ( '100', 0, 0, 0 );";
+                    "VALUES ( '15851896552', 30, 20, 3 );";
             stmt.executeUpdate(sql);
 
             sql = "INSERT INTO CLIENTINFO " +
-                    "VALUES ( '101', 1, 1, 1 );";
+                    "VALUES ( '13162513871', 1, 1, 1 );";
             stmt.executeUpdate(sql);
 
             sql = "INSERT INTO CLIENTINFO " +
-                    "VALUES ( '102', 2, 2, 2 );";
+                    "VALUES ( '13816902960', 2, 2, 2 );";
             stmt.executeUpdate(sql);
 
             sql = "INSERT INTO CLIENTINFO " +
-                    "VALUES ( '103', 3, 3, 3 );";
+                    "VALUES ( '15221399767', 3, 3, 3 );";
             stmt.executeUpdate(sql);
 
             sql = "DELETE FROM CLIENTCOMMUNICATIONTIME";
             stmt.executeUpdate(sql);
 
             sql = "INSERT INTO CLIENTCOMMUNICATIONTIME " +
-                    "VALUES ( '100', 0 );";
+                    "VALUES ( '15851896552', 300 );";
             stmt.executeUpdate(sql);
 
             sql = "INSERT INTO CLIENTCOMMUNICATIONTIME " +
-                    "VALUES ( '101', 10 );";
+                    "VALUES ( '13162513871', 10 );";
             stmt.executeUpdate(sql);
 
             sql = "INSERT INTO CLIENTCOMMUNICATIONTIME " +
-                    "VALUES ( '102', 20 );";
+                    "VALUES ( '13816902960', 20 );";
             stmt.executeUpdate(sql);
 
             sql = "INSERT INTO CLIENTCOMMUNICATIONTIME " +
-                    "VALUES ( '103', 30 );";
+                    "VALUES ( '15221399767', 30 );";
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -98,6 +98,7 @@ public class SqliteTool {
         }
     }
 
+
     public List<ClientInfo> getAllClientInfo() {
 
         Connection c = null;
@@ -112,7 +113,7 @@ public class SqliteTool {
             ResultSet rs = stmt.executeQuery( sql );
 
             while ( rs.next() ) {
-                ClientInfo client = new ClientInfo( Integer.parseInt( rs.getString( "phoneNumber") ), rs.getDouble( "owedBeforeYear"), rs.getDouble( "owedThisYear"), rs.getDouble( "TimeOutCount") );
+                ClientInfo client = new ClientInfo( rs.getString( "phoneNumber") , rs.getDouble( "owedBeforeYear"), rs.getDouble( "owedThisYear"), rs.getDouble( "TimeOutCount") );
                 clientInfoList.add( client );
             }
 
@@ -142,7 +143,7 @@ public class SqliteTool {
             ResultSet rs = stmt.executeQuery( sql );
 
             if ( rs.next() ) {
-                client = new ClientInfo( Integer.parseInt( rs.getString( "phoneNumber") ), rs.getDouble( "owedBeforeYear"), rs.getDouble( "owedThisYear"), rs.getDouble( "TimeOutCount") );
+                client = new ClientInfo( rs.getString( "phoneNumber"), rs.getDouble( "owedBeforeYear"), rs.getDouble( "owedThisYear"), rs.getDouble( "TimeOutCount") );
             }
 
             rs.close();
@@ -227,6 +228,24 @@ public class SqliteTool {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:mobileDB.db");
+
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "UPDATE CLIENTCOMMUNICATIONTIME set communicationTime = 0 where phoneNumber = " + accountId + ";";
+            stmt.executeUpdate(sql);
+            c.commit();
+
+            stmt.close();
+            c.close();
+
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
     }
 
     public void updateEveryMonth() {
@@ -244,7 +263,7 @@ public class SqliteTool {
             rs = stmt.executeQuery( sql );
 
             while ( rs.next() ) {
-                ClientInfo client = new ClientInfo( Integer.parseInt( rs.getString( "phoneNumber") ), rs.getDouble( "owedBeforeYear"), rs.getDouble( "owedThisYear"), rs.getDouble( "TimeOutCount") );
+                ClientInfo client = new ClientInfo( rs.getString( "phoneNumber"), rs.getDouble( "owedBeforeYear"), rs.getDouble( "owedThisYear"), rs.getDouble( "TimeOutCount") );
                 clientInfoList.add( client );
             }
 

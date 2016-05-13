@@ -17,13 +17,52 @@ public class Controller {
 
     private ClientInfo client = null;
     private SqliteTool sTool = new SqliteTool();
+    private double communicationTime;
 
     String accountId;
     double expectedCharge;
     double paySuccess;
 
     public Controller(String phoneNumber ) {
+        communicationTime = sTool.getCommunicationTime(phoneNumber);
         client = sTool.getClientInfo( phoneNumber );
+        client.updateInfo(communicationTime);
+    }
+
+    public ClientInfo getClient() {
+        return client;
+    }
+
+    public void setClient(ClientInfo client) {
+        this.client = client;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setExpectedCharge(double expectedCharge) {
+        this.expectedCharge = expectedCharge;
+    }
+
+    public double getPaySuccess() {
+        return paySuccess;
+    }
+
+    public void setPaySuccess(double paySuccess) {
+        this.paySuccess = paySuccess;
+    }
+
+    public double getCommunicationTime() {
+        return communicationTime;
+    }
+
+    public void setCommunicationTime(double communicationTime) {
+        this.communicationTime = communicationTime;
     }
 
     public double getExpectedCharge() {

@@ -49,7 +49,7 @@ public class ClientInfoTest {
         List<Boolean> judgements = new LinkedList<Boolean>();
 
         for ( int i = 0; i < obyList.size(); i++ ) {
-            ClientInfo client = new ClientInfo( 1, obyList.get( i ), otyList.get( i ), tocList.get( i ) );
+            ClientInfo client = new ClientInfo( "1", obyList.get( i ), otyList.get( i ), tocList.get( i ) );
             boolean flag = client.updateInfo( ctList.get( i ) );
             if ( flag ) {
                 double owed = client.getOwedThisYear() + client.getOwedBeforeYear();
@@ -112,7 +112,7 @@ public class ClientInfoTest {
         List<Boolean> judgements = new LinkedList<Boolean>();
 
         for ( int i = 0; i < obyList.size(); i++ ) {
-            ClientInfo client = new ClientInfo( 1, obyList.get( i ), otyList.get( i ), tocList.get( i ) );
+            ClientInfo client = new ClientInfo( "1", obyList.get( i ), otyList.get( i ), tocList.get( i ) );
             boolean flag = client.updateInfo( ctList.get( i ) );
             if ( flag ) {
                 double owed = client.getOwedThisYear() + client.getOwedBeforeYear();
@@ -174,7 +174,7 @@ public class ClientInfoTest {
         List<Boolean> judgements = new LinkedList<Boolean>();
 
         for ( int i = 0; i < obyList.size(); i++ ) {
-            ClientInfo client = new ClientInfo( 1, obyList.get( i ), otyList.get( i ), tocList.get( i ) );
+            ClientInfo client = new ClientInfo( "1", obyList.get( i ), otyList.get( i ), tocList.get( i ) );
             boolean flag = client.updateInfo( ctList.get( i ) );
             if ( flag ) {
                 double owed = client.getOwedThisYear() + client.getOwedBeforeYear();
