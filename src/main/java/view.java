@@ -12,6 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import tools.Util;
 
 import java.io.IOException;
 
@@ -124,9 +125,15 @@ public class view extends Application{
 
                         String tel = clientTelField.getText().trim();
                         System.out.println(tel);
-                        controller = new Controller(tel);
+                        if(Util.isMobileNo(tel)){
+                            controller = new Controller(tel);
 
-                        updateScene(scenePayChoice);
+                            updateScene(scenePayChoice);
+                        }else{
+                            Alert alert = new Alert(Alert.AlertType.ERROR,"请输入正确的手机号！");
+                            alert.show();
+                        }
+
                     }
                     keyEvent.consume();
                 }
