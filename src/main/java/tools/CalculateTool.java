@@ -17,7 +17,7 @@ public class CalculateTool {
         this.totalConversationTime = totalConversationTime;
         this.client = client;
         this.discount = calculateDiscount();
-        this.owedExpense = this.client.getOwedThisYear() + 0.05 * this.client.getOwedBeforeYear();
+        this.owedExpense = 0.05 * this.client.getOwedBeforeYear();
     }
 
     public double calculateDiscount() {
