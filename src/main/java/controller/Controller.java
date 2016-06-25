@@ -26,7 +26,9 @@ public class Controller {
     public Controller(String phoneNumber ) {
         communicationTime = sTool.getCommunicationTime(phoneNumber);
         client = sTool.getClientInfo( phoneNumber );
-        client.updateInfo(communicationTime);
+        if(client!=null && communicationTime!=-1){
+            client.updateInfo(communicationTime);
+        }
     }
 
     public ClientInfo getClient() {
@@ -89,7 +91,7 @@ public class Controller {
 
     public boolean print() throws IOException {
         Date dt = new Date();
-        String time = new SimpleDateFormat( "yyyyMMddHHmmss" ).format( dt );
+        String time = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ).format( dt );
         String fileName = "printFiles/" +  client.getClientId() + "_" + time + ".txt";
         File file = new File( fileName );
         FileWriter pw;

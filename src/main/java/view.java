@@ -127,8 +127,13 @@ public class view extends Application{
                         System.out.println(tel);
                         if(Util.isMobileNo(tel)){
                             controller = new Controller(tel);
+                            if(controller.getCommunicationTime()==-1){
+                                Alert alert = new Alert(Alert.AlertType.ERROR,"不存在该手机号的相关信息！");
+                                alert.show();
+                            }else{
+                                updateScene(scenePayChoice);
+                            }
 
-                            updateScene(scenePayChoice);
                         }else{
                             Alert alert = new Alert(Alert.AlertType.ERROR,"请输入正确的手机号！");
                             alert.show();
@@ -235,15 +240,27 @@ public class view extends Application{
         commicationTimeLabel.setLayoutY(85);
         pay.getChildren().add(commicationTimeLabel);
 
+        Label timeoutCountText = new Label("超时次数");
+        timeoutCountText.setLayoutX(50);
+        timeoutCountText.setLayoutY(125);
+        pay.getChildren().add(timeoutCountText);
+
+        final double timeoutCount = controller.getClient().getTimeOutCount();
+        String count = String.valueOf(timeoutCount);
+        Label timeoutCountLabel = new Label(count+ "次");
+        timeoutCountLabel.setLayoutX(180);
+        timeoutCountLabel.setLayoutY(125);
+        pay.getChildren().add(timeoutCountLabel);
+
         Label accountLabel = new Label("帐号：");
         accountLabel.setLayoutX(50);
-        accountLabel.setLayoutY(125);
+        accountLabel.setLayoutY(165);
         pay.getChildren().add(accountLabel);
 
         accountTextField = new TextField();
         accountTextField.setId("account");
         accountTextField.setLayoutX(180);
-        accountTextField.setLayoutY(125);
+        accountTextField.setLayoutY(165);
         accountTextField.setPrefSize(140, 30);
         pay.getChildren().add(accountTextField);
 
@@ -251,25 +268,25 @@ public class view extends Application{
 
         Label pswLabel = new Label("密码：");
         pswLabel.setLayoutX(50);
-        pswLabel.setLayoutY(165);
+        pswLabel.setLayoutY(205);
         pay.getChildren().add(pswLabel);
 
         passwordTextFeild = new PasswordField();
         passwordTextFeild.setId("password");
         passwordTextFeild.setLayoutX(180);
-        passwordTextFeild.setLayoutY(165);
+        passwordTextFeild.setLayoutY(205);
         passwordTextFeild.setPrefSize(140, 30);
         pay.getChildren().add(passwordTextFeild);
 
 
         Button payBtn = new Button("支付");
         payBtn.setLayoutX(20);
-        payBtn.setLayoutY(210);
+        payBtn.setLayoutY(250);
         pay.getChildren().add(payBtn);
 
         final Button printBtn = new Button("打印清单");
         printBtn.setLayoutX(190);
-        printBtn.setLayoutY(210);
+        printBtn.setLayoutY(250);
         pay.getChildren().add(printBtn);
         printBtn.setDisable( true );
 
@@ -336,13 +353,13 @@ public class view extends Application{
             }
         });
 
-        scenePay = new Scene(pay,500,280);
+        scenePay = new Scene(pay,500,300);
         scenePay.getStylesheets().add(prePath+"/style.css");
 
 
         Button backBtn = new Button("返回主界面");
         backBtn.setLayoutX(350);
-        backBtn.setLayoutY(210);
+        backBtn.setLayoutY(250);
         pay.getChildren().add(backBtn);
 
         backBtn.setOnAction(new EventHandler<ActionEvent>() {

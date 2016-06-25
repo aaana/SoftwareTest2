@@ -171,7 +171,9 @@ public class SqliteTool {
             String sql = "SELECT communicationTime FROM CLIENTCOMMUNICATIONTIME WHERE phoneNumber = '" + id + "';";
             ResultSet rs = stmt.executeQuery( sql );
 
-            communicationTime = rs.getDouble( 1 );
+            if(rs.next()){
+                communicationTime = rs.getDouble( 1 );
+            }
 
             rs.close();
             stmt.close();
